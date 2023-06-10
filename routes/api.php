@@ -50,4 +50,11 @@ Route::group([
         'orders' => OrderController::class,
         'order_details' => OrderDetailController::class
     ]);
+
+    Route::get('order/dikonfirmasi', [OrderController::class, 'dikonfirmasi']);
+    Route::get('order/dikemas', [OrderController::class, 'dikemas']);
+    Route::get('order/dikirim', [OrderController::class, 'dikirim']);
+    Route::get('order/diterima', [OrderController::class, 'diterima']);
+    Route::get('order/selesai', [OrderController::class, 'selesai']);
+    Route::post('order/ubah_status/{order}', [OrderController::class, 'ubah_status']);
 });

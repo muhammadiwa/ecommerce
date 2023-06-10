@@ -108,9 +108,6 @@ class OrderController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_member' => 'required',
-            'invoice' => 'required',
-            'grandtotal' => 'required',
-            'status' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -124,11 +121,81 @@ class OrderController extends Controller
 
         $order->update($input);
 
+        OrderDetail::where('id_order', $order['id'])->delete();
+
+        for ($i=0; $i < count($input['id_produk']); $i++) { 
+            OrderDetail::create([
+                'id_order' => $order['id'],
+                'id_produk' => $input['id_produk'][$i],
+                'jumlah' => $input['jumlah'][$i],
+                'size' => $input['size'][$i],
+                'color' => $input['color'][$i],
+                'total' => $input['total'][$i]
+            ]);
+        }
+
         return response()->json([
             'message' => 'Data berhasil diupdate',
             'data' => $order
         ]);
 
+    }
+
+    public function ubah_status(Request $request, Order $order)
+    {
+        $order->update([
+            'status' => $request->status,
+        ]);
+
+        return response()->json([
+            'message' => 'Status berhasil diupdate',
+            'data' => $order
+        ]);
+    }
+
+    public function dikonfirmasi()
+    {
+        $orders = Order::where('status', 'Dikonfirmasi')->get();
+
+        return response()->json([
+            'data' => $orders
+        ]);
+    }
+
+    public function dikemas()
+    {
+        $orders = Order::where('status', 'Dikemas')->get();
+
+        return response()->json([
+            'data' => $orders
+        ]);
+    }
+
+    public function dikirim()
+    {
+        $orders = Order::where('status', 'Dikirim')->get();
+
+        return response()->json([
+            'data' => $orders
+        ]);
+    }
+
+    public function diterima()
+    {
+        $orders = Order::where('status', 'Diterima')->get();
+
+        return response()->json([
+            'data' => $orders
+        ]);
+    }
+
+    public function selesai()
+    {
+        $orders = Order::where('status', 'Selesai')->get();
+
+        return response()->json([
+            'data' => $orders
+        ]);
     }
 
     /**
