@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\ProductController;
@@ -31,7 +32,9 @@ Route::group([
 
 ], function () {
 
-    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('admin', [AuthController::class, 'login'])->name('login');
+    Route::post('register', [AuthController::class, 'register'])->name('register');
+    Route::post('login', [AuthController::class, 'login_member']);
 
 });
 
@@ -47,8 +50,7 @@ Route::group([
         'members' => MemberController::class,
         'testimonis' => TestimoniController::class,
         'reviews' => ReviewController::class,
-        'orders' => OrderController::class,
-        'order_details' => OrderDetailController::class
+        'orders' => OrderController::class
     ]);
 
     Route::get('order/dikonfirmasi', [OrderController::class, 'dikonfirmasi']);
@@ -57,4 +59,6 @@ Route::group([
     Route::get('order/diterima', [OrderController::class, 'diterima']);
     Route::get('order/selesai', [OrderController::class, 'selesai']);
     Route::post('order/ubah_status/{order}', [OrderController::class, 'ubah_status']);
+
+    Route::get('reports', [ReportController::class, 'index']);
 });
