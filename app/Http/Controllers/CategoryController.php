@@ -12,6 +12,11 @@ class CategoryController extends Controller
     {
         $this->middleware('auth:api', ['except' =>'index']);
     }
+
+    public function list()
+    {
+        return view('kategori.index');
+    }
     /**
      * Display a listing of the resource.
      *
